@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -17,8 +18,11 @@ public static class EventManager
     #endregion
 
   
+    public static Action EnableColliders;
+    public static Action<List<Collider>> DisableColliders;
 
- 
+    public static Func<ObjectController> GetCurrenObject;
+
 
 
 }
