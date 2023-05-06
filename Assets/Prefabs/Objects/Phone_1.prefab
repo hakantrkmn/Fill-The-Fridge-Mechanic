@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1740467858517460094}
   - component: {fileID: 1740467858516690014}
   - component: {fileID: 1740467858515560094}
-  - component: {fileID: 1740467858510310302}
+  - component: {fileID: 277732168}
   m_Layer: 0
   m_Name: smartphones
   m_TagString: Untagged
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1740467858517563486}
   m_LocalRotation: {x: -0.000000021855694, y: 0.00000001192488, z: 0.00000004371139,
     w: 1}
-  m_LocalPosition: {x: 0, y: 0.537, z: -0}
+  m_LocalPosition: {x: 0, y: 1, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -85,26 +85,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!95 &1740467858510310302
-Animator:
-  serializedVersion: 4
+--- !u!65 &277732168
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1740467858517563486}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 8047647314d996143a965ccd31039ad6, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  serializedVersion: 2
+  m_Size: {x: 1.3, y: 2.2, z: 0.2}
+  m_Center: {x: 0.0000011324883, y: -0.00000023841858, z: 0.00000009313226}
 --- !u!1 &4040909886011441105
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,6 +107,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4891901992783989633}
+  - component: {fileID: 1570078361}
   m_Layer: 0
   m_Name: Phone_1
   m_TagString: Untagged
@@ -137,3 +131,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1570078361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4040909886011441105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 069536079930141b8808e3f019ad946f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: {x: 1, y: 2, z: 1}
+  volume: 0
+  collider: {fileID: 277732168}

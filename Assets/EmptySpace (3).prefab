@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 236846954419606776}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.05, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -76,7 +76,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.1, z: 0.1}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1683499968242033757
 MonoBehaviour:
@@ -90,8 +90,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ff47c6355f9b4f9c9949debbd6d28bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  basketController: {fileID: 0}
   topSpace: {fileID: 0}
   filled: 0
   spaceObject: {fileID: 0}
   collider: {fileID: 1683499968242033754}
   placePos: {fileID: 3596920777893172596}
+  volume: 1

@@ -93,7 +93,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7635936129472368684}
   - component: {fileID: 2107898655}
-  - component: {fileID: 8363188785699409924}
   m_Layer: 0
   m_Name: Car_1
   m_TagString: Untagged
@@ -130,22 +129,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 069536079930141b8808e3f019ad946f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameState: 0
   size: {x: 1, y: 1, z: 2}
-  volume: 2
-  collider: {fileID: 8363188785699409924}
---- !u!65 &8363188785699409924
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2631915710668532607}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.1, y: 0.1, z: 0.2}
-  m_Center: {x: 0, y: 0.05, z: -0.03}
+  volume: 0
+  collider: {fileID: 1062963590}
+  placed: 0
 --- !u!1 &4223170001285896446
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,7 +453,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 35bc85ac413b5bd4092c301536ab24bb,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 35bc85ac413b5bd4092c301536ab24bb,
         type: 3}
@@ -514,6 +502,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35bc85ac413b5bd4092c301536ab24bb, type: 3}
+--- !u!1 &1521228578989073716 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -5483650726099538236, guid: 35bc85ac413b5bd4092c301536ab24bb,
+    type: 3}
+  m_PrefabInstance: {fileID: 2808651750768561136}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1062963590
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521228578989073716}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 200.9019, y: 482.05783, z: 93.20735}
+  m_Center: {x: -0.000011444091, y: 16.816046, z: 1.6791533}
 --- !u!4 &2409685970718534683 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 35bc85ac413b5bd4092c301536ab24bb,

@@ -17,11 +17,22 @@ public static class EventManager
     public static Func<bool> IsPointerOverUI;
     #endregion
 
-  
+    public static Action<ShoppingCarController> ShoppingCardSelected;
+    public static Action<ObjectController> ObjectRemoved;
+
     public static Action EnableColliders;
+    public static Action<BasketController> UpdatePercent;
+
+    public static Action<BasketController> BasketSelected;
+    public static Action DoneButtonClicked;
+    public static Action RemoveButtonClicked;
+    public static Action<GameStates> ChangeGameState;
+
+    public static Action<BasketController> ObjectPlaced;
+
     public static Action<List<Collider>> DisableColliders;
 
-    public static Func<ObjectController> GetCurrenObject;
+    public static Func<Transform> GetSelectedTranform;
 
 
 

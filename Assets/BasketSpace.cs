@@ -6,35 +6,42 @@ using UnityEngine;
 
 public class BasketSpace : MonoBehaviour
 {
-    private BasketController basketController;
+    public BasketController basketController;
     public BasketSpace topSpace;
     public bool filled;
     public ObjectController spaceObject;
     public Collider collider;
     public Transform placePos;
+    public float volume;
     private void Start()
     {
         basketController = GetComponentInParent<BasketController>();
-        RaycastHit[] hits;
-        hits = Physics.RaycastAll(transform.position, transform.up, 100.0F);
 
-        for (int i = 0; i < hits.Length; i++)
-        {
-            Debug.Log(hits[i].transform.name);
-        }
         
-        Debug.Log(collider.bounds.size.y);
+
     }
 
     private void OnEnable()
     {
+        EventManager.ObjectRemoved += ObjectRemoved;
         EventManager.EnableColliders += EnableColliders;
     }
 
-  
+    private void ObjectRemoved(ObjectController obj)
+    {
+        if (spaceObject==obj)
+        {
+            spaceObject = null;
+            filled = false;
+            EventManager.UpdatePercent(basketController);
+            basketController.SetBaseSpaces();
+        }
+    }
+
 
     private void OnDisable()
     {
+        EventManager.ObjectRemoved -= ObjectRemoved;
         EventManager.EnableColliders -= EnableColliders;
     }
 

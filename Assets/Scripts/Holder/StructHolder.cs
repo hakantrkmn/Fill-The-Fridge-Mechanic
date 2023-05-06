@@ -9,6 +9,18 @@ public struct TutorialPanels
     public GameObject panelGameObject;
 }
 
+[Serializable]
+public struct BasketVariables
+{
+    public BasketController basket;
+    public float percent;
+}
+[Serializable]
+public struct ObjectVariables
+{
+    public GameObject prefab;
+    public ObjectTypes type;
+}
 
 #region Incremental Idle
 [Serializable]

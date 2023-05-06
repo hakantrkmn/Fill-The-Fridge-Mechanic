@@ -17,7 +17,7 @@ MonoBehaviour:
   swaySpeed: 35
   animationSpeed: 1
   horizontalDamping: 0.867
-  isClamped: 0
+  isClamped: 1
   defaultMinXClampValue: -3
   defaultMaxXClampValue: 3
   defaultMinZClampValue: -3

@@ -9,7 +9,7 @@ public class ScriptableManager : MonoBehaviour
 {
     [SerializeField] GameData gameData;
     [SerializeField] PlayerMovementSettings PlayerMovementSettings;
-
+    public ObjectData objData;
 
     //-------------------------------------------------------------------
     void Awake()
@@ -18,12 +18,14 @@ public class ScriptableManager : MonoBehaviour
 
         Scriptable.GameData = GetGameData;
         Scriptable.PlayerSettings = GetPlayerMovementSettings;
+        Scriptable.GetObjectData = GetObjData;
+
     }
 
 
     //-------------------------------------------------------------------
     GameData GetGameData() => gameData;
-
+    ObjectData GetObjData() => objData;
 
     //-------------------------------------------------------------------
     PlayerMovementSettings GetPlayerMovementSettings() => PlayerMovementSettings;
@@ -35,5 +37,6 @@ public class ScriptableManager : MonoBehaviour
 public static class Scriptable
 {
     public static Func<GameData> GameData;
+    public static Func<ObjectData> GetObjectData;
     public static Func<PlayerMovementSettings> PlayerSettings;
 }

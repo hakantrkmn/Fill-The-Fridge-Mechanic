@@ -1,17 +1,29 @@
 ﻿public enum ButtonTypes
 {
-    StartLevel,
-    RestartLevel,
-    OpenNextLevel,
-    PauseLevel,
-    ResetProgressData,
+    DoneButton,
+    RemoveButton,
 }
 
-public enum InGamePanelTypes
+public enum GameStates
 {
-    OnlyLevel,
-    ProgressBar,
-    Both
+    ChooseBasket,
+    PlaceObject,
+    RemoveObject,
+    GameOver,
+}
+
+public enum ObjectTypes
+{
+    Doll,
+    LipStick,
+    Radio,
+    Phone,
+    Watch,
+    Lego_1,
+    Lego_2,
+    Lego_3,
+    Car,
+    WaterBottle,
 }
 public enum MoneyStates
 {
