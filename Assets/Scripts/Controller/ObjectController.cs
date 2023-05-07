@@ -8,8 +8,6 @@ using UnityEngine;
 
 public class ObjectController : MonoBehaviour
 {
-    public GameStates gameState;
-    public Vector3 size;
     public float volume;
     public BoxCollider collider;
     private Transform shoppingCardParent;
@@ -22,20 +20,6 @@ public class ObjectController : MonoBehaviour
         volume = collider.bounds.size.x * collider.bounds.size.y * collider.bounds.size.z;
     }
 
-    private void OnEnable()
-    {
-        EventManager.ChangeGameState += ChangeGameState;
-    }
-
-    private void OnDisable()
-    {
-        EventManager.ChangeGameState -= ChangeGameState;
-    }
-
-    private void ChangeGameState(GameStates obj)
-    {
-        gameState = obj;
-    }
 
     public void RemoveObject()
     {
@@ -43,12 +27,19 @@ public class ObjectController : MonoBehaviour
         {
             placed = false;
             transform.parent = shoppingCardParent;
-            transform.DOLocalJump(shoppingCardPosition,2,1,.5f);
-            transform.DORotateQuaternion(shoppingCardRotation,.5f);
+            transform.DOLocalJump(shoppingCardPosition, 2, 1, .5f);
+            transform.DORotateQuaternion(shoppingCardRotation, .5f);
             EventManager.ObjectRemoved(this);
         }
     }
 
+    public void PlaceObject(Vector3 point, Quaternion rotation, Transform hitParent)
+    {
+        transform.DOJump(point, 2, 1, .5f);
+        placed = true;
+        transform.DORotateQuaternion(rotation, .5f);
+        transform.parent = hitParent;
+    }
 
     private void Start()
     {

@@ -30,7 +30,7 @@ public static class EventManager
     public static Action RemoveButtonClicked;
     public static Action<GameStates> ChangeGameState;
 
-    public static Action<BasketController> ObjectPlaced;
+    public static Action<BasketController,ObjectController> ObjectPlaced;
 
     public static Action<List<Collider>> DisableColliders;
 

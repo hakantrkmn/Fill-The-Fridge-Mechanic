@@ -12,14 +12,13 @@ public class ShoppingCarController : MonoBehaviour
     public List<ObjectController> placedObjects;
     public List<ObjectController> allObjects;
 
-    public int objectIndex;
     public bool isSelected;
     public ObjectController currentObject;
     private int layer_mask;
-    public Vector3 overlapPos;
 
     private float timer;
     public GameObject cantFitText;
+
     private void Start()
     {
         layer_mask = LayerMask.GetMask("BasketSpace");
@@ -54,7 +53,6 @@ public class ShoppingCarController : MonoBehaviour
             placedObjects.Remove(obj);
             allObjects.Add(obj);
             currentObject = allObjects.First();
-
         }
     }
 
@@ -85,7 +83,7 @@ public class ShoppingCarController : MonoBehaviour
         {
             timer += Time.deltaTime;
 
-            if (objectIndex < allObjects.Count)
+            if (allObjects.Count != 0)
             {
                 PlaceObject();
             }
@@ -101,9 +99,11 @@ public class ShoppingCarController : MonoBehaviour
         if (Input.GetMouseButton(0) && timer > .3f)
         {
             EventManager.PlayerCanControl(false);
+
             timer = 0;
 
             RaycastHit hit;
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer_mask))
@@ -114,17 +114,11 @@ public class ShoppingCarController : MonoBehaviour
                     EventManager.EnableColliders();
 
 
-                    var offset = space.transform.parent.rotation * new Vector3(0,
-                        (currentObject.collider.bounds.size.y) -
-                        space.collider.bounds.size.y, 0);
-                    overlapPos = space.transform.position + offset;
                     List<Collider> hitColliders = Physics.OverlapBox(space.transform.position,
-                        (currentObject.collider.bounds.size*.9f ) / 2, space.transform.rotation,
+                        (currentObject.collider.bounds.size ) / 2, space.transform.rotation,
                         layer_mask).ToList();
-                    Debug.Log("hit" + hitColliders.Count);
                     if (CheckIfObjectCanFit(hitColliders))
                     {
-                        
                         Vector3 middlePoint = Vector3.zero;
 
 
@@ -136,35 +130,31 @@ public class ShoppingCarController : MonoBehaviour
 
 
                         middlePoint /= hitColliders.Count;
-                        //middlePoint.y = space.placePos.position.y;
-                        //currentObject.transform.position = middlePoint;
-                        currentObject.transform.DOJump(middlePoint, 2, 1, .5f);
-                        currentObject.GetComponent<ObjectController>().placed = true;
-                        //currentObject.transform.rotation = space.transform.parent.rotation;
-                        currentObject.transform.DORotateQuaternion(space.transform.rotation, .5f);
-                        currentObject.transform.parent = space.transform;
+                        
+                        currentObject.PlaceObject(middlePoint,space.transform.rotation,space.transform);
+                        
                         EventManager.DisableColliders(hitColliders);
-                        allObjects.Remove(currentObject);
-                        placedObjects.Add(currentObject);
+                        
                         UpdateCurrentObject();
-                        EventManager.ObjectPlaced(space.GetComponent<BasketSpace>().basketController);
+                        EventManager.ObjectPlaced(space.GetComponent<BasketSpace>().basketController, currentObject);
                     }
                     else
                     {
                         var text = Instantiate(cantFitText, hit.point, quaternion.identity);
-                        Destroy(text,1);
+                        Destroy(text, 1);
                         EventManager.DisableColliders(hitColliders);
                     }
                 }
             }
         }
-        
     }
 
 
     public void UpdateCurrentObject()
     {
-        if (objectIndex < allObjects.Count)
+        allObjects.Remove(currentObject);
+        placedObjects.Add(currentObject);
+        if (allObjects.Count!=0)
         {
             currentObject = allObjects.First();
         }
@@ -184,15 +174,12 @@ public class ShoppingCarController : MonoBehaviour
             {
                 tempList.Add(space);
             }
-            
         }
 
         foreach (var temp in tempList)
         {
             spaces.Remove(temp);
         }
-        Debug.Log(spaceVolume);
-        Debug.Log(currentObject.volume);
 
         if (currentObject.volume <= (spaceVolume))
         {

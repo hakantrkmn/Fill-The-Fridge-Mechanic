@@ -581,8 +581,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 069536079930141b8808e3f019ad946f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameState: 0
-  size: {x: 1, y: 2, z: 1}
   volume: 0
   collider: {fileID: 1273305557}
   placed: 0
@@ -652,6 +650,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: doll (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9affcc9a0a1294540b96df5fde0c94e0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9affcc9a0a1294540b96df5fde0c94e0, type: 3}

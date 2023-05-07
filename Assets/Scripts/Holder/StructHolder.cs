@@ -3,13 +3,6 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public struct TutorialPanels
-{
-    public TutorialTypes panelName;
-    public GameObject panelGameObject;
-}
-
-[Serializable]
 public struct BasketVariables
 {
     public BasketController basket;

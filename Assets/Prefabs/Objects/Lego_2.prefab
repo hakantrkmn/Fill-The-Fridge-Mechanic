@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5446474647441117659}
   - component: {fileID: 2383698015328474319}
   - component: {fileID: 974430271}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: lego2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,6 +142,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 069536079930141b8808e3f019ad946f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 1, y: 1, z: 2}
   volume: 0
   collider: {fileID: 974430271}
+  placed: 0

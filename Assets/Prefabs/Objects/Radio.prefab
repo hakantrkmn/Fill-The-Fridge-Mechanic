@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4032928028549011766}
   - component: {fileID: 4032928028549979126}
   - component: {fileID: 985704220}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: radio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,6 +142,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 069536079930141b8808e3f019ad946f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 0, y: 0, z: 0}
   volume: 0
   collider: {fileID: 985704220}
+  placed: 0

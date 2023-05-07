@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1740467858516690014}
   - component: {fileID: 1740467858515560094}
   - component: {fileID: 277732168}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: smartphones
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,6 +143,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 069536079930141b8808e3f019ad946f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 1, y: 2, z: 1}
   volume: 0
   collider: {fileID: 277732168}
+  placed: 0

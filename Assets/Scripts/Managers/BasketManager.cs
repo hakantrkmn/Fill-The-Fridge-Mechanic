@@ -10,31 +10,40 @@ public class BasketManager : MonoBehaviour
     public List<BasketController> baskets;
     public List<BasketVariables> basketStats;
     public float percent;
+
     private void OnEnable()
     {
-        EventManager.UpdatePercent += ObjectPlaced;
+        EventManager.UpdatePercent += UpdatePercent;
         EventManager.ObjectPlaced += ObjectPlaced;
         EventManager.GetSelectedTranform += () => selectedPos;
     }
 
     private void OnDisable()
     {
-        EventManager.UpdatePercent -= ObjectPlaced;
+        EventManager.UpdatePercent -= UpdatePercent;
         EventManager.ObjectPlaced -= ObjectPlaced;
+    }
+
+    private void UpdatePercent(BasketController basket)
+    {
+        basket.CalculatePercent();
+        CalculatePercent();
     }
 
     public void CalculatePercent()
     {
-        float fillBasketAmount=0;
+        float fillBasketAmount = 0;
         foreach (var basketController in baskets)
         {
-            fillBasketAmount+= basketController.percent;
+            fillBasketAmount += basketController.percent;
         }
 
         percent = (100 * fillBasketAmount) / (baskets.Count * 100);
     }
-    private void ObjectPlaced(BasketController basket)
+
+    private void ObjectPlaced(BasketController basket, ObjectController obj)
     {
+        basket.objects.Add(obj);
         basket.CalculatePercent();
         CalculatePercent();
     }
@@ -45,6 +54,7 @@ public class BasketManager : MonoBehaviour
         {
             baskets.Add(basket);
         }
+
         foreach (var basket in baskets)
         {
             var temp = new BasketVariables();
@@ -56,6 +66,6 @@ public class BasketManager : MonoBehaviour
 
     private void Start()
     {
-       GetBaskets();
+        GetBaskets();
     }
 }

@@ -129,8 +129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 069536079930141b8808e3f019ad946f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameState: 0
-  size: {x: 1, y: 1, z: 2}
   volume: 0
   collider: {fileID: 1062963590}
   placed: 0
@@ -495,10 +493,35 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -6526815383500271739, guid: 35bc85ac413b5bd4092c301536ab24bb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -5483650726099538236, guid: 35bc85ac413b5bd4092c301536ab24bb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 35bc85ac413b5bd4092c301536ab24bb,
         type: 3}
       propertyPath: m_Name
       value: car1 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 35bc85ac413b5bd4092c301536ab24bb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6117631337230849438, guid: 35bc85ac413b5bd4092c301536ab24bb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8948458998355892771, guid: 35bc85ac413b5bd4092c301536ab24bb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35bc85ac413b5bd4092c301536ab24bb, type: 3}

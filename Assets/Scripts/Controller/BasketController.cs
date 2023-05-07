@@ -12,29 +12,36 @@ public class BasketController : SerializedMonoBehaviour
     public Transform startPos;
     public GameObject spacePrefab;
     public List<List<BasketSpace>> spaceColumns;
+    public List<ObjectController> objects;
+    [HideInInspector]
     public bool isSelected;
     private Vector3 firstPosition;
     private Quaternion firstRotation;
     public float percent;
     private void OnEnable()
     {
+        EventManager.ObjectRemoved += ObjectRemoved;
         EventManager.DoneButtonClicked += DoneButtonClicked;
         EventManager.BasketSelected += BasketSelected;
         EventManager.DisableColliders += DisableColliders;
     }
 
+    private void ObjectRemoved(ObjectController obj)
+    {
+        if (objects.Contains(obj))
+        {
+            objects.Remove(obj);
+            EventManager.UpdatePercent(this);
+        }
+    }
+
+
     public void CalculatePercent()
     {
-        int filledSpaceAmount=0;
-        foreach (var column in spaceColumns)
+        float filledSpaceAmount=0;
+        foreach (var obj in objects)
         {
-            foreach (var space in column)
-            {
-                if (space.filled)
-                {
-                    filledSpaceAmount++;
-                }
-            }
+            filledSpaceAmount += obj.volume;
         }
 
         float maxAmount = size.x * size.y * size.z;
@@ -44,6 +51,7 @@ public class BasketController : SerializedMonoBehaviour
 
     private void OnDisable()
     {
+        EventManager.ObjectRemoved -= ObjectRemoved;
         EventManager.DoneButtonClicked -= DoneButtonClicked;
         EventManager.BasketSelected -= BasketSelected;
         EventManager.DisableColliders -= DisableColliders;
@@ -99,7 +107,7 @@ public class BasketController : SerializedMonoBehaviour
         SetBaseSpaces();
     }
 
-    public void CreateSpaces()
+    void CreateSpaces()
     {
         int listIndex=0;
         for (int i = 0; i < size.x; i++)
