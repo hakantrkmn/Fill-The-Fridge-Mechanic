@@ -18,9 +18,9 @@ MonoBehaviour:
   animationSpeed: 1
   horizontalDamping: 0.867
   isClamped: 1
-  defaultMinXClampValue: -3
-  defaultMaxXClampValue: 3
+  defaultMinXClampValue: -10
+  defaultMaxXClampValue: 10
   defaultMinZClampValue: -3
   defaultMaxZClampValue: 3
-  minXClampValue: -3
-  maxXClampValue: 3
+  minXClampValue: -10
+  maxXClampValue: 10

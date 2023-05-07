@@ -100,6 +100,7 @@ public class ShoppingCarController : MonoBehaviour
     {
         if (Input.GetMouseButton(0) && timer > .3f)
         {
+            EventManager.PlayerCanControl(false);
             timer = 0;
 
             RaycastHit hit;
@@ -114,15 +115,16 @@ public class ShoppingCarController : MonoBehaviour
 
 
                     var offset = space.transform.parent.rotation * new Vector3(0,
-                        (currentObject.collider.bounds.size.y)/2 -
+                        (currentObject.collider.bounds.size.y) -
                         space.collider.bounds.size.y, 0);
                     overlapPos = space.transform.position + offset;
-                    List<Collider> hitColliders = Physics.OverlapBox(overlapPos,
+                    List<Collider> hitColliders = Physics.OverlapBox(space.transform.position,
                         (currentObject.collider.bounds.size*.9f ) / 2, space.transform.rotation,
                         layer_mask).ToList();
-                    Debug.Log(hitColliders.Count);
+                    Debug.Log("hit" + hitColliders.Count);
                     if (CheckIfObjectCanFit(hitColliders))
                     {
+                        
                         Vector3 middlePoint = Vector3.zero;
 
 
@@ -156,6 +158,7 @@ public class ShoppingCarController : MonoBehaviour
                 }
             }
         }
+        
     }
 
 
@@ -169,6 +172,7 @@ public class ShoppingCarController : MonoBehaviour
 
     public bool CheckIfObjectCanFit(List<Collider> spaces)
     {
+        List<Collider> tempList = new List<Collider>();
         float spaceVolume = 0;
         foreach (var space in spaces)
         {
@@ -178,9 +182,14 @@ public class ShoppingCarController : MonoBehaviour
             }
             else
             {
-                return false;
+                tempList.Add(space);
             }
             
+        }
+
+        foreach (var temp in tempList)
+        {
+            spaces.Remove(temp);
         }
         Debug.Log(spaceVolume);
         Debug.Log(currentObject.volume);

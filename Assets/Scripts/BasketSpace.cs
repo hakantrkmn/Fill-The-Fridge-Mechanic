@@ -47,10 +47,9 @@ public class BasketSpace : MonoBehaviour
 
     private void EnableColliders()
     {
-        if (!filled)
-        {
+
             GetComponent<Collider>().enabled = true;
-        }
+        
     }
 
 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -22,6 +23,16 @@ public class HorizontalMovement : MonoBehaviour
         _xGoal = transform.position.x;
         playerSettings.minXClampValue = playerSettings.defaultMinXClampValue;
         playerSettings.maxXClampValue = playerSettings.defaultMaxXClampValue;
+    }
+
+    private void OnEnable()
+    {
+        EventManager.PlayerCanControl += SwitchCanControl;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.PlayerCanControl -= SwitchCanControl;
     }
 
 
@@ -70,10 +81,11 @@ public class HorizontalMovement : MonoBehaviour
 
 
     //---------------------------------------------------------------------------------
-    private void SwitchCanControl()
+    private void SwitchCanControl(bool control)
     {
-        canControl = !canControl;
+        /*canControl = control;
         _xGoal = transform.position.x;
+        */
     }
 
 
