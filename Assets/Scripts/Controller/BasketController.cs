@@ -9,44 +9,50 @@ using UnityEngine;
 public class BasketController : SerializedMonoBehaviour
 {
     public Vector3 size;
-    public Transform startPos;
-    public GameObject spacePrefab;
-    public List<List<BasketSpace>> spaceColumns;
+    [HideInInspector]
     public bool isSelected;
+    public float percent;
+    [HideInInspector]
+    public float maxHeight;
+    public float volume;
+    public List<ObjectController> insideObjects;
+    
     private Vector3 firstPosition;
     private Quaternion firstRotation;
-    public float percent;
     private void OnEnable()
     {
+        EventManager.ObjectRemoved += ObjectRemoved;
         EventManager.DoneButtonClicked += DoneButtonClicked;
         EventManager.BasketSelected += BasketSelected;
-        EventManager.DisableColliders += DisableColliders;
+    }
+
+    private void ObjectRemoved(ObjectController obj)
+    {
+        if (insideObjects.Contains(obj))
+        {
+            insideObjects.Remove(obj);
+        }
     }
 
     public void CalculatePercent()
     {
-        int filledSpaceAmount=0;
-        foreach (var column in spaceColumns)
+        float filledSpaceAmount=0;
+        foreach (var obj in insideObjects)
         {
-            foreach (var space in column)
-            {
-                if (space.filled)
-                {
-                    filledSpaceAmount++;
-                }
-            }
+            filledSpaceAmount += obj.volume;
         }
 
-        float maxAmount = size.x * size.y * size.z;
-        percent = (100*filledSpaceAmount)/maxAmount;
+        
+        percent = (100*filledSpaceAmount)/volume;
     }
   
 
     private void OnDisable()
     {
+        EventManager.ObjectRemoved -= ObjectRemoved;
         EventManager.DoneButtonClicked -= DoneButtonClicked;
         EventManager.BasketSelected -= BasketSelected;
-        EventManager.DisableColliders -= DisableColliders;
+        
     }
 
 
@@ -81,67 +87,14 @@ public class BasketController : SerializedMonoBehaviour
         
     }
 
-    
-    private void DisableColliders(List<Collider> obj)
-    {
-        SetBaseSpaces();
-    }
 
     private void Start()
     {
+        volume = size.x * size.y * size.z;
+        maxHeight = size.y;
         firstRotation = transform.rotation;
         firstPosition = transform.position;
-        for (int i = 0; i < (int)size.x * (int)size.z; i++)
-        {
-            spaceColumns.Add(new List<BasketSpace>());
-        }
-        CreateSpaces();
-        SetBaseSpaces();
-    }
-
-    public void CreateSpaces()
-    {
-        int listIndex=0;
-        for (int i = 0; i < size.x; i++)
-        {
-            for (int j = 0; j < size.z; j++)
-            {
-                for (int k = 0; k < size.y; k++)
-                {
-                    var pos = startPos.position + new Vector3(i * 1f, k * 1f, j*1f);
-                    var space = Instantiate(spacePrefab, pos, quaternion.identity,startPos);
-                    spaceColumns[listIndex].Add(space.GetComponent<BasketSpace>());
-                }
-
-                listIndex++;
-            }
-        }
-    }
-
-    public void SetBaseSpaces()
-    {
-        bool baseChoosed = false;
-        for (int i = 0; i < spaceColumns.Count; i++)
-        {
-            for (int j = 0; j < spaceColumns[i].Count; j++)
-            {
-                if (spaceColumns[i][j].filled)
-                {
-                    spaceColumns[i][j].CloseSpace();
-                }
-                else if(!spaceColumns[i][j].filled && !baseChoosed)
-                {
-                    spaceColumns[i][j].OpenSpace();
-                    baseChoosed = true;
-                }
-                else if(!spaceColumns[i][j].filled && baseChoosed)
-                {
-                    spaceColumns[i][j].CloseSpace();
-                }
-            }
-
-            baseChoosed = false;
-        }
+      
     }
     
 

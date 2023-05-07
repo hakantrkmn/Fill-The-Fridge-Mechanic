@@ -34,7 +34,6 @@ public class BasketSpace : MonoBehaviour
             spaceObject = null;
             filled = false;
             EventManager.UpdatePercent(basketController);
-            basketController.SetBaseSpaces();
         }
     }
 

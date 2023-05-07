@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         }
         else if (gameState==GameStates.ChooseBasket || gameState==GameStates.PlaceObject )
         {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;

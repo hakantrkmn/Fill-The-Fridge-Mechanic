@@ -12,6 +12,16 @@ public enum GameStates
     GameOver,
 }
 
+public enum HitTypes
+{
+    JustGround,
+    GroundAndBasket,
+    GroundAndObject,
+    JustObject,
+    JustBasket,
+    None,
+}
+
 public enum ObjectTypes
 {
     Doll,

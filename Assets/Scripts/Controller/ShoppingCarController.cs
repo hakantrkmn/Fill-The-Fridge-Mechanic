@@ -8,21 +8,26 @@ using UnityEngine;
 
 public class ShoppingCarController : MonoBehaviour
 {
-    private GameStates gameState;
     public List<ObjectController> placedObjects;
     public List<ObjectController> allObjects;
-
-    public int objectIndex;
-    public bool isSelected;
-    public ObjectController currentObject;
-    private int layer_mask;
-    public Vector3 overlapPos;
-
-    private float timer;
     public GameObject cantFitText;
+    public List<GameObject> objectList;
+    public List<GameObject> basketList;
+    public GameObject ground;
+
+
+    bool isSelected;
+    ObjectController currentObject;
+    int place_layer;
+    Vector3 overlapPos;
+    private float timer;
+    private GameStates gameState;
+
+
     private void Start()
     {
-        layer_mask = LayerMask.GetMask("BasketSpace");
+        place_layer = LayerMask.GetMask("BasketGround", "Basket", "Object");
+
         foreach (var obj in GetComponentsInChildren<ObjectController>())
         {
             allObjects.Add(obj);
@@ -32,7 +37,7 @@ public class ShoppingCarController : MonoBehaviour
 
     public void ChooseBasket()
     {
-        if (!isSelected)
+        if (!isSelected && allObjects.Count != 0)
         {
             isSelected = true;
             currentObject = allObjects.First();
@@ -54,7 +59,6 @@ public class ShoppingCarController : MonoBehaviour
             placedObjects.Remove(obj);
             allObjects.Add(obj);
             currentObject = allObjects.First();
-
         }
     }
 
@@ -85,7 +89,7 @@ public class ShoppingCarController : MonoBehaviour
         {
             timer += Time.deltaTime;
 
-            if (objectIndex < allObjects.Count)
+            if (allObjects.Count != 0)
             {
                 PlaceObject();
             }
@@ -96,111 +100,169 @@ public class ShoppingCarController : MonoBehaviour
         }
     }
 
-    public void PlaceObject()
+    void PlaceObject()
     {
         if (Input.GetMouseButton(0) && timer > .3f)
         {
-            EventManager.PlayerCanControl(false);
+            basketList.Clear();
+            objectList.Clear();
+            ground = null;
             timer = 0;
+
 
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layer_mask))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, place_layer))
             {
-                var space = hit.transform.GetComponent<BasketSpace>();
-                if (space.basketController.isSelected)
+                var basket = hit.transform.GetComponentInParent<BasketController>();
+                if (basket != null)
                 {
-                    EventManager.EnableColliders();
-
-
-                    var offset = space.transform.parent.rotation * new Vector3(0,
-                        (currentObject.collider.bounds.size.y) -
-                        space.collider.bounds.size.y, 0);
-                    overlapPos = space.transform.position + offset;
-                    List<Collider> hitColliders = Physics.OverlapBox(space.transform.position,
-                        (currentObject.collider.bounds.size*.9f ) / 2, space.transform.rotation,
-                        layer_mask).ToList();
-                    Debug.Log("hit" + hitColliders.Count);
-                    if (CheckIfObjectCanFit(hitColliders))
+                    if (basket.isSelected)
                     {
-                        
-                        Vector3 middlePoint = Vector3.zero;
+                        var offset = basket.transform.rotation *
+                                     new Vector3(0, (currentObject.collider.bounds.size.y) / 2, 0);
 
+                        overlapPos = hit.point + offset;
 
-                        foreach (var hitCollider in hitColliders)
+                        if (hit.transform.GetComponent<BasketGround>())
                         {
-                            middlePoint += hitCollider.GetComponent<BasketSpace>().placePos.position;
-                            hitCollider.GetComponent<BasketSpace>().SpaceFilled(currentObject);
+                            ground = hit.transform.gameObject;
+                        }
+                        else if (hit.transform.GetComponentInParent<ObjectController>())
+                        {
+                            objectList.Add(hit.transform.gameObject);
                         }
 
+                        List<Collider> hitColliders = Physics.OverlapBox(overlapPos,
+                            (currentObject.collider.bounds.size*.99f) / 2, basket.transform.rotation, place_layer).ToList();
+                        foreach (var coll in hitColliders)
+                        {
+                            if (coll.GetComponent<BasketController>())
+                            {
+                                basketList.Add(coll.gameObject);
+                            }
+                            else if (coll.GetComponentInParent<ObjectController>())
+                            {
+                                if (!objectList.Contains(coll.gameObject))
+                                {
+                                    objectList.Add(coll.gameObject);
+                                }
+                            }
+                        }
 
-                        middlePoint /= hitColliders.Count;
-                        //middlePoint.y = space.placePos.position.y;
-                        //currentObject.transform.position = middlePoint;
-                        currentObject.transform.DOJump(middlePoint, 2, 1, .5f);
-                        currentObject.GetComponent<ObjectController>().placed = true;
-                        //currentObject.transform.rotation = space.transform.parent.rotation;
-                        currentObject.transform.DORotateQuaternion(space.transform.rotation, .5f);
-                        currentObject.transform.parent = space.transform;
-                        EventManager.DisableColliders(hitColliders);
-                        allObjects.Remove(currentObject);
-                        placedObjects.Add(currentObject);
-                        UpdateCurrentObject();
-                        EventManager.ObjectPlaced(space.GetComponent<BasketSpace>().basketController);
-                    }
-                    else
-                    {
-                        var text = Instantiate(cantFitText, hit.point, quaternion.identity);
-                        Destroy(text,1);
-                        EventManager.DisableColliders(hitColliders);
+                        var hitType = CheckForPlace();
+
+                        if (hitType == HitTypes.JustBasket)
+                        {
+                            var text = Instantiate(cantFitText, hit.point, quaternion.identity);
+                            Destroy(text, 1);
+                        }
+                        else
+                        {
+                            PlaceObjectWithCondition(hitType, basket, hit);
+                        }
                     }
                 }
             }
         }
-        
     }
 
-
-    public void UpdateCurrentObject()
+    void PlaceObjectWithCondition(HitTypes condition, BasketController basket, RaycastHit hit)
     {
-        if (objectIndex < allObjects.Count)
+        if (condition == HitTypes.JustGround)
         {
-            currentObject = allObjects.First();
+            currentObject.PlaceObject(basket.transform, hit.point, basket.transform.rotation, 0);
+            basket.insideObjects.Add(currentObject);
+            EventManager.ObjectPlaced(basket);
+            UpdateCurrentObject();
         }
-    }
-
-    public bool CheckIfObjectCanFit(List<Collider> spaces)
-    {
-        List<Collider> tempList = new List<Collider>();
-        float spaceVolume = 0;
-        foreach (var space in spaces)
+        else if (condition == HitTypes.JustObject)
         {
-            if (!space.GetComponent<BasketSpace>().filled)
+            if (hit.transform.GetComponentInParent<ObjectController>())
             {
-                spaceVolume += 1;
+                if (objectList.Count < 2)
+                {
+                    var obj = hit.transform.GetComponentInParent<ObjectController>();
+                    if (currentObject.height + obj.currentHeight <= basket.maxHeight)
+                    {
+                        if (currentObject.size == obj.size)
+                        {
+                            currentObject.PlaceObject(basket.transform, obj.placePosition.position,
+                                basket.transform.rotation,
+                                obj.currentHeight);
+                        }
+                        else
+                        {
+                            currentObject.PlaceObject(basket.transform, hit.point,
+                                basket.transform.rotation,
+                                obj.currentHeight);
+                        }
+
+                        basket.insideObjects.Add(currentObject);
+                        EventManager.ObjectPlaced(basket);
+                        UpdateCurrentObject();
+                    }
+                    else
+                    {
+                        SpawnCantHitText(hit.point);
+                    }
+                }
+                else
+                {
+                    SpawnCantHitText(hit.point);
+
+                }
             }
             else
             {
-                tempList.Add(space);
+                SpawnCantHitText(hit.point);
             }
-            
         }
-
-        foreach (var temp in tempList)
+        else if (condition == HitTypes.GroundAndObject)
         {
-            spaces.Remove(temp);
+            SpawnCantHitText(hit.point);
         }
-        Debug.Log(spaceVolume);
-        Debug.Log(currentObject.volume);
+    }
 
-        if (currentObject.volume <= (spaceVolume))
+    private void SpawnCantHitText(Vector3 position)
+    {
+        var text = Instantiate(cantFitText, position, quaternion.identity);
+        Destroy(text, 1);
+    }
+
+    HitTypes CheckForPlace()
+    {
+        if (basketList.Count != 0)
         {
-            return true;
+            return HitTypes.JustBasket;
+        }
+        else if (basketList.Count == 0 && objectList.Count == 0 && ground != null)
+        {
+            return HitTypes.JustGround;
+        }
+        else if (basketList.Count == 0 && objectList.Count != 0 && ground == null)
+        {
+            return HitTypes.JustObject;
+        }
+        else if (ground != null && objectList.Count != 0)
+        {
+            return HitTypes.GroundAndObject;
         }
         else
         {
-            return false;
+            Debug.Log(ground);
+            return HitTypes.None;
+        }
+    }
+
+    void UpdateCurrentObject()
+    {
+        allObjects.Remove(currentObject);
+        placedObjects.Add(currentObject);
+        if (allObjects.Count != 0)
+        {
+            currentObject = allObjects.First();
         }
     }
 }
