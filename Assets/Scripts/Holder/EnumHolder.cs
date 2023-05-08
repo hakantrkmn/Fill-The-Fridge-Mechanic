@@ -9,6 +9,7 @@ public enum GameStates
     ChooseBasket,
     PlaceObject,
     RemoveObject,
+    ChooseShoppingCard,
     GameOver,
 }
 

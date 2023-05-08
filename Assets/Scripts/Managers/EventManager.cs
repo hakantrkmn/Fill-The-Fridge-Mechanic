@@ -21,9 +21,9 @@ public static class EventManager
     public static Action<ObjectController> ObjectRemoved;
 
     public static Action EnableColliders;
-    public static Action<bool> PlayerCanControl;
 
     public static Action<BasketController> UpdatePercent;
+    public static Action<float> UpdateUIPercent;
 
     public static Action<BasketController> BasketSelected;
     public static Action DoneButtonClicked;

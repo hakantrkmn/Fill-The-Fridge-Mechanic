@@ -7,17 +7,12 @@ using Sirenix.OdinInspector;
 
 public class HorizontalMovement : MonoBehaviour
 {
-    [SerializeField] private PlayerMovementSettings playerSettings;
-    [SerializeField] private bool canControl;
-    [SerializeField] private bool canSway;
-    [ShowIf("canSway")]
-    [SerializeField] private Transform swayTarget;
-
+     public PlayerMovementSettings playerSettings;
     private float _xGoal;
 
 
-
   
+
     private void Start()
     {
         _xGoal = transform.position.x;
@@ -25,22 +20,12 @@ public class HorizontalMovement : MonoBehaviour
         playerSettings.maxXClampValue = playerSettings.defaultMaxXClampValue;
     }
 
-    private void OnEnable()
-    {
-        EventManager.PlayerCanControl += SwitchCanControl;
-    }
-
-    private void OnDisable()
-    {
-        EventManager.PlayerCanControl -= SwitchCanControl;
-    }
+   
 
 
-    //---------------------------------------------------------------------------------
     private void Update()
     {
-        if (canControl == false)
-            return;
+
 
         _xGoal += EventManager.GetInputDelta().x * playerSettings.horizontalSpeed;
         _xGoal = Mathf.Clamp(_xGoal, playerSettings.minXClampValue, playerSettings.maxXClampValue);
@@ -52,46 +37,6 @@ public class HorizontalMovement : MonoBehaviour
     }
 
 
-    //---------------------------------------------------------------------------------
-    private void LateUpdate()
-    {
-        if (canControl == false)
-            return;
-
-        if (canSway)
-        {
-            var targetRot = 0f;
-            if (EventManager.IsTouching())
-            {
-                targetRot = EventManager.GetInputDelta().x * playerSettings.swaySpeed * 30;
-            }
-            else
-            {
-                targetRot = 0f;
-            }
-
-            // var rotation = swayTarget.transform.rotation;
-            // rotation = Quaternion.Lerp(rotation, Quaternion.Euler(rotation.x, 
-            // 	Mathf.Clamp(targetRot, -40, 40), rotation.z), Time.deltaTime * 10);
-            // swayTarget.transform.rotation = rotation;
-
-            swayTarget.DOLocalRotate(new Vector3(0, Mathf.Clamp(targetRot, -40, 40), 0), 0.5f).SetId<Tween>("Sway");
-        }
-    }
 
 
-    //---------------------------------------------------------------------------------
-    private void SwitchCanControl(bool control)
-    {
-        /*canControl = control;
-        _xGoal = transform.position.x;
-        */
-    }
-
-
-    //---------------------------------------------------------------------------------
-    private void SwitchCanSway()
-    {
-        canSway = !canSway;
-    }
 }

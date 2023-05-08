@@ -18,7 +18,8 @@ public class ShoppingCarController : MonoBehaviour
 
     private float timer;
     public GameObject cantFitText;
-
+    public float percent;
+    public GameObject groundObj;
     private void Start()
     {
         layer_mask = LayerMask.GetMask("BasketSpace");
@@ -31,7 +32,7 @@ public class ShoppingCarController : MonoBehaviour
 
     public void ChooseBasket()
     {
-        if (!isSelected)
+        if (!isSelected && allObjects.Count!=0)
         {
             isSelected = true;
             currentObject = allObjects.First();
@@ -41,12 +42,15 @@ public class ShoppingCarController : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.ObjectRemoved += ObjectRemoved;
         EventManager.ChangeGameState += ChangeGameState;
         EventManager.ShoppingCardSelected += ShoppingCardSelected;
     }
 
-    private void ObjectRemoved(ObjectController obj)
+    public void CalculatePercent()
+    {
+        percent = (100 * (float)placedObjects.Count) / (placedObjects.Count + allObjects.Count);
+    }
+    public void ObjectRemoved(ObjectController obj)
     {
         if (placedObjects.Contains(obj))
         {
@@ -63,7 +67,6 @@ public class ShoppingCarController : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.ObjectRemoved -= ObjectRemoved;
         EventManager.ChangeGameState -= ChangeGameState;
         EventManager.ShoppingCardSelected -= ShoppingCardSelected;
     }
@@ -98,7 +101,6 @@ public class ShoppingCarController : MonoBehaviour
     {
         if (Input.GetMouseButton(0) && timer > .3f)
         {
-            EventManager.PlayerCanControl(false);
 
             timer = 0;
 
@@ -115,7 +117,7 @@ public class ShoppingCarController : MonoBehaviour
 
 
                     List<Collider> hitColliders = Physics.OverlapBox(space.transform.position,
-                        (currentObject.collider.bounds.size ) / 2, space.transform.rotation,
+                        (currentObject.collider.bounds.size*.99f ) / 2, space.transform.rotation,
                         layer_mask).ToList();
                     if (CheckIfObjectCanFit(hitColliders))
                     {
