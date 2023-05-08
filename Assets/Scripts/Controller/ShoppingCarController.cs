@@ -15,7 +15,8 @@ public class ShoppingCarController : MonoBehaviour
     public List<GameObject> basketList;
     public GameObject ground;
 
-
+    public GameObject groundObj;
+    public float percent;
     bool isSelected;
     ObjectController currentObject;
     int place_layer;
@@ -33,7 +34,10 @@ public class ShoppingCarController : MonoBehaviour
             allObjects.Add(obj);
         }
     }
-
+    public void CalculatePercent()
+    {
+        percent = (100 * (float)placedObjects.Count) / (placedObjects.Count + allObjects.Count);
+    }
 
     public void ChooseBasket()
     {
@@ -47,12 +51,11 @@ public class ShoppingCarController : MonoBehaviour
 
     private void OnEnable()
     {
-        EventManager.ObjectRemoved += ObjectRemoved;
         EventManager.ChangeGameState += ChangeGameState;
         EventManager.ShoppingCardSelected += ShoppingCardSelected;
     }
 
-    private void ObjectRemoved(ObjectController obj)
+    public void ObjectRemoved(ObjectController obj)
     {
         if (placedObjects.Contains(obj))
         {
@@ -69,7 +72,6 @@ public class ShoppingCarController : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.ObjectRemoved -= ObjectRemoved;
         EventManager.ChangeGameState -= ChangeGameState;
         EventManager.ShoppingCardSelected -= ShoppingCardSelected;
     }
@@ -174,8 +176,8 @@ public class ShoppingCarController : MonoBehaviour
         {
             currentObject.PlaceObject(basket.transform, hit.point, basket.transform.rotation, 0);
             basket.insideObjects.Add(currentObject);
-            EventManager.ObjectPlaced(basket);
             UpdateCurrentObject();
+            EventManager.ObjectPlaced(basket);
         }
         else if (condition == HitTypes.JustObject)
         {
@@ -200,8 +202,8 @@ public class ShoppingCarController : MonoBehaviour
                         }
 
                         basket.insideObjects.Add(currentObject);
-                        EventManager.ObjectPlaced(basket);
                         UpdateCurrentObject();
+                        EventManager.ObjectPlaced(basket);
                     }
                     else
                     {

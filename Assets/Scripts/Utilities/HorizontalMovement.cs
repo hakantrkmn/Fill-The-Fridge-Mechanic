@@ -7,7 +7,7 @@ using Sirenix.OdinInspector;
 
 public class HorizontalMovement : MonoBehaviour
 {
-    [SerializeField] private PlayerMovementSettings playerSettings;
+ public PlayerMovementSettings playerSettings;
     [SerializeField] private bool canControl;
     [SerializeField] private bool canSway;
     [ShowIf("canSway")]
